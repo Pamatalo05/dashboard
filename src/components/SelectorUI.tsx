@@ -7,6 +7,7 @@ import { useState } from 'react';
 export default function SelectorUI() {
 
     const [cityInput, setCityInput] = useState('');
+    
     const handleChange = (event: SelectChangeEvent<string>) => {
         setCityInput(event.target.value)
     };
@@ -26,7 +27,7 @@ export default function SelectorUI() {
                 <MenuItem value={"manta"}>Manta</MenuItem>
                 <MenuItem value={"cuenca"}>Cuenca</MenuItem>
             </Select>
-            
+
             {cityInput && (
                 <p>
                     Información del clima en <span style={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{cityInput}</span>
