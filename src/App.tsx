@@ -9,6 +9,9 @@ import SelectorUI from './components/SelectorUI';
 import IndicatorUI from './components/IndicatorUI';
 import useFetchData from './functions/useFetchData';
 
+import TableUI from './components/TableUI';
+import ChartUI from './components/ChartUI';
+
 function App() {
   const [] = useState(0)
   const dataFetcherOutput = useFetchData();
@@ -35,7 +38,7 @@ function App() {
             {dataFetcherOutput &&
               (<IndicatorUI
                 title='Temperatura (2m)'
-                description={`${dataFetcherOutput.current.temperature_2m} ${dataFetcherOutput.current_units.temperature_2m}`} />)
+                description={`${dataFetcherOutput.data?.current.temperature_2m} ${dataFetcherOutput.data?.current_units.temperature_2m}`} />)
             }
           </Grid>
 
@@ -43,7 +46,7 @@ function App() {
             {dataFetcherOutput &&
               (<IndicatorUI
                 title='Temperatura Aparente'
-                description={`${dataFetcherOutput.current.apparent_temperature} ${dataFetcherOutput.current_units.apparent_temperature}`} />)
+                description={`${dataFetcherOutput.data?.current.apparent_temperature} ${dataFetcherOutput.data?.current_units.apparent_temperature}`} />)
             }
           </Grid>
 
@@ -51,7 +54,7 @@ function App() {
             {dataFetcherOutput &&
               (<IndicatorUI
                 title='Velocidad del Viento'
-                description={`${dataFetcherOutput.current.wind_speed_10m} ${dataFetcherOutput.current_units.wind_speed_10m}`} />)
+                description={`${dataFetcherOutput.data?.current.wind_speed_10m} ${dataFetcherOutput.data?.current_units.wind_speed_10m}`} />)
             }
           </Grid>
 
@@ -59,7 +62,7 @@ function App() {
             {dataFetcherOutput &&
               (<IndicatorUI
                 title='Humedad Relativa en %'
-                description={`${dataFetcherOutput.current.relative_humidity_2m} ${dataFetcherOutput.current_units.relative_humidity_2m}`} />)
+                description={`${dataFetcherOutput.data?.current.relative_humidity_2m} ${dataFetcherOutput.data?.current_units.relative_humidity_2m}`} />)
             }
 
           </Grid>
@@ -68,12 +71,14 @@ function App() {
         <Grid
           sx={{ display: { xs: "none", md: "block" } }} >
           Elemento: Gráfico
+          <ChartUI />
         </Grid>
 
         {/* Tabla */}
         <Grid
           sx={{ display: { xs: "none", md: "block" } }}>
           Elemento: Tabla
+          <TableUI />
         </Grid>
 
         {/* Información adicional */}

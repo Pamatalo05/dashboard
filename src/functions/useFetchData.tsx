@@ -1,24 +1,34 @@
 import { useEffect, useState } from 'react';
 import { type OpenMeteoResponse } from '../types/DashboardTypes';
 
-export default function useFetchData(): OpenMeteoResponse {
-    const URL = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m ';
+export default function useFetchData() {
 
-    const [data, setData] = useState<OpenMeteoResponse>();
+    const URL =
+      "https://api.open-meteo.com/v1/forecast?latitude=-0.9494&longitude=-80.7314&hourly=temperature_2m,wind_speed_10m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m&timezone=auto";
+
+    const [data, setData] = useState<OpenMeteoResponse | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fecthData = async () => {
+        async function fetchData() {
             try {
-                const response = await fetch(URL);
-                const json = await response.json();
+                const res = await fetch(URL);
+                if (!res.ok) throw new Error("Error al cargar datos");
+
+                const json: OpenMeteoResponse = await res.json();
                 setData(json);
-            } catch (error) {
-                console.error("Error Fetching Data", error);
+
+            } catch (err: any) {
+                setError(err.message);
+
+            } finally {
+                setLoading(false);
             }
-        };
+        }
 
-        fecthData();
-    }, []); // El array vacío asegura que el efecto se ejecute solo una vez después del primer renderizado
+        fetchData();
+    }, []);
 
-    return data;
+    return { data, loading, error };
 }
