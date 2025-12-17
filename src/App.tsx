@@ -12,6 +12,15 @@ import TableUI from './components/TableUI';
 import ChartUI from './components/ChartUI';
 import { useState } from 'react';
 
+import WeatherDescriptionUI from "./components/WeatherDescriptionUI";
+import CohereAssistantUI from "./components/CohereAssistantUI";
+import LocationIntroUI from "./components/LocationIntroUI";
+import WeatherBackgroundUI from "./components/WeatherBackgroundUI";
+
+
+
+
+
 function App() {
   // const [count, setCount] = useState(0)
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -19,72 +28,105 @@ function App() {
 
 
   return (
-    <div>
+    <div style={{ position: "relative", minHeight: "100vh" }}>
+      {/* 🌤️ FONDO DE VIDEO */}
+      {dataFetcherOutput && (
+        <WeatherBackgroundUI
+          temperature={dataFetcherOutput.current.temperature_2m}
+          humidity={dataFetcherOutput.current.relative_humidity_2m}
+        />
+      )}
       <Grid container spacing={5} justifyContent="center" alignItems="center">
 
-        {/* Encabezado */}
-        <Grid size={{ xs: 12, md: 12 }}> <HeaderUI /> </Grid>
+        {/* Encabezado */ }
+        < Grid size={{ xs: 12, md: 12 }}> <HeaderUI /> </Grid>
 
-        {/* Alertas */}
-        <Grid container justifyContent="right" alignItems="center">
-          <AlertUI description="No se preveen lluvias" />
-
-        </Grid>
-
-        {/* Selector */}
-        <Grid size={{ xs: 12, md: 3 }}> <SelectorUI onOptionSelect={setSelectedOption} /></Grid>
-
-        {/* Indicadores */}
-        <Grid container size={{ xs: 12, md: 9 }} >
-
-          <Grid size={{ xs: 12, md: 3 }}>
-            {dataFetcherOutput &&
-              (<IndicatorUI
-                title='Temperatura (2m)'
-                description={`${dataFetcherOutput.current.temperature_2m} ${dataFetcherOutput.current_units.temperature_2m}`} />)
-            }
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 3 }}>
-            {dataFetcherOutput &&
-              (<IndicatorUI
-                title='Temperatura aparente'
-                description={`${dataFetcherOutput.current.apparent_temperature} ${dataFetcherOutput.current_units.apparent_temperature}`} />)
-            }
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 3 }}>
-            {dataFetcherOutput &&
-              (<IndicatorUI
-                title='Velocidad del viento'
-                description={`${dataFetcherOutput.current.wind_speed_10m} ${dataFetcherOutput.current_units.wind_speed_10m}`} />)
-            }
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 3 }}>
-            {dataFetcherOutput &&
-              (<IndicatorUI
-                title='Humedad relativa'
-                description={`${dataFetcherOutput.current.relative_humidity_2m} ${dataFetcherOutput.current_units.relative_humidity_2m}`} />)
-            }
-          </Grid>
-
-
-          <Grid size={{ xs: 6, md: 6 }} sx={{ display: { xs: "none", md: "block" } }}>
-            {dataFetcherOutput && <ChartUI data={dataFetcherOutput} />}
-          </Grid>
-
-
-          <Grid size={{ xs: 6, md: 6 }} sx={{ display: { xs: "none", md: "block" } }}>
-            {dataFetcherOutput && <TableUI data={dataFetcherOutput} />}
-          </Grid>
-
-
-          {/* Información adicional */}
-          <Grid size={{ xs: 12, md: 12 }}>Elemento: Información adicional</Grid>
-        </Grid>
+      <Grid size={{ xs: 12, md: 12 }}>
+        <LocationIntroUI city={selectedOption} />
       </Grid>
-    </div>
+
+
+
+      {/* Alertas */}
+      <Grid container justifyContent="right" alignItems="center">
+        <AlertUI description="No se preveen lluvias" />
+
+      </Grid>
+
+      {/* Selector */}
+      <Grid size={{ xs: 12, md: 3 }}> <SelectorUI onOptionSelect={setSelectedOption} /></Grid>
+
+      {/* Indicadores */}
+      <Grid container size={{ xs: 12, md: 9 }} >
+
+        <Grid size={{ xs: 12, md: 3 }}>
+          {dataFetcherOutput &&
+            (<IndicatorUI
+              title='Temperatura (2m)'
+              description={`${dataFetcherOutput.current.temperature_2m} ${dataFetcherOutput.current_units.temperature_2m}`} />)
+          }
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 3 }}>
+          {dataFetcherOutput &&
+            (<IndicatorUI
+              title='Temperatura aparente'
+              description={`${dataFetcherOutput.current.apparent_temperature} ${dataFetcherOutput.current_units.apparent_temperature}`} />)
+          }
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 3 }}>
+          {dataFetcherOutput &&
+            (<IndicatorUI
+              title='Velocidad del viento'
+              description={`${dataFetcherOutput.current.wind_speed_10m} ${dataFetcherOutput.current_units.wind_speed_10m}`} />)
+          }
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 3 }}>
+          {dataFetcherOutput &&
+            (<IndicatorUI
+              title='Humedad relativa'
+              description={`${dataFetcherOutput.current.relative_humidity_2m} ${dataFetcherOutput.current_units.relative_humidity_2m}`} />)
+          }
+        </Grid>
+
+
+        <Grid size={{ xs: 6, md: 6 }} sx={{ display: { xs: "none", md: "block" } }}>
+          {dataFetcherOutput && <ChartUI data={dataFetcherOutput} />}
+        </Grid>
+
+
+        <Grid size={{ xs: 6, md: 6 }} sx={{ display: { xs: "none", md: "block" } }}>
+          {dataFetcherOutput && <TableUI data={dataFetcherOutput} />}
+        </Grid>
+
+
+        {/* Información adicional */}
+        <Grid size={{ xs: 12, md: 12 }}>
+          {dataFetcherOutput && (
+            <WeatherDescriptionUI
+              temperature={dataFetcherOutput.current.temperature_2m}
+              humidity={dataFetcherOutput.current.relative_humidity_2m}
+            />
+          )}
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 12 }}>
+          {dataFetcherOutput && (
+            <CohereAssistantUI
+              temperature={dataFetcherOutput.current.temperature_2m}
+              humidity={dataFetcherOutput.current.relative_humidity_2m}
+              windSpeed={dataFetcherOutput.current.wind_speed_10m}
+            />
+          )}
+        </Grid>
+
+      </Grid>
+
+
+    </Grid>
+    </div >
   )
 }
 
